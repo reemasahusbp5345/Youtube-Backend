@@ -6,8 +6,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 
 const getAllVideos = asyncHandler(async (_, res) => {
   try {
-    const videos = await Video.find();
-
+    const videos = await Video.find().populate('owner','username avatar');
     if (!videos) {
       throw new ApiError(500, "Error while fetching data");
     }
