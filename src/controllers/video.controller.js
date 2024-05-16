@@ -17,6 +17,23 @@ const getAllVideos = asyncHandler(async (_, res) => {
     throw new ApiError(500, "Internal server error: ", error);
   }
 });
+
+const getVideoById=asyncHandler(async(req,res)=>{
+  try {
+    const id=req?.params?.id;
+    if(!id){
+      throw new ApiError(401,"Id not found");
+    }
+    const video=await Video.findById(id);
+    if(!video){
+      throw new ApiError(401,"Video not found")
+    };
+
+    res.status(200).json(new ApiResponse(201,video,"Video fetched successfully"))
+  } catch (error) {
+    throw new ApiError(500,"Internal Server Error: ",error)
+  }
+})
 const postVideo = asyncHandler(async (req, res) => {
   try {
     const { title, description, duration } = req.body;
@@ -72,4 +89,4 @@ const postVideo = asyncHandler(async (req, res) => {
   }
 });
 
-export { getAllVideos, postVideo };
+export { getAllVideos, getVideoById, postVideo };
